@@ -23,9 +23,8 @@ const (
 )
 
 type BlError struct {
-	Err error  `json:"err"`
-	Msg string `json:"msg"`
 	Ret int    `json:"status"`
+	Msg string `json:"msg"`
 }
 
 var recodeText = map[int]string{
@@ -57,6 +56,6 @@ func RetText(code int) string {
 	return recodeText[RetUknowErr]
 }
 
-func NewBlError(ret int, msg string, err error) BlError {
-	return BlError{Ret: ret, Msg: msg, Err: err}
+func NewBlError(ret int, msg string) BlError {
+	return BlError{Ret: ret, Msg: msg}
 }
