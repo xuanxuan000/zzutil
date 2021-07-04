@@ -1,4 +1,4 @@
-package hhlog
+package log
 
 import (
 	"fmt"
