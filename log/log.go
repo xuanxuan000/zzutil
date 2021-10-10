@@ -1,13 +1,13 @@
 package log
 
 import (
-	"fmt"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"syscall"
+	"time"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -144,19 +144,26 @@ func Infof(format string, v ...interface{}) {
 	aclog.Named(fileInfo()).Infof(format, v...)
 }
 
-func LogChanger() {
-	c := make(chan os.Signal)
-	//监听指定信号
-	signal.Notify(c, syscall.SIGUSR1, syscall.SIGUSR2)
-	select {
-	case sig := <-c:
-		if syscall.SIGUSR1 == sig {
-			fmt.Println("USR1 Set-Debug")
-			SetLogLevel("DEBUG")
-		} else if syscall.SIGUSR2 == sig {
-			fmt.Println("USR2 Set-Error")
+func signalHandle() {
+	t1 := time.NewTimer(1 * time.Hour)
+	ch := make(chan os.Signal)
+	signal.Notify(ch, syscall.SIGUSR1, syscall.SIGUSR2)
+	for {
+		select {
+		case sig := <-ch:
+			switch sig {
+			case syscall.SIGUSR1:
+				SetLogLevel("DEBUG")
+				t1.Reset(1 * time.Hour)
+			case syscall.SIGUSR2:
+				SetLogLevel("ERROR")
+				t1.Reset(1 * time.Hour)
+				t1.Stop()
+			default:
+			}
+		case <-t1.C:
 			SetLogLevel("ERROR")
+			t1.Stop()
 		}
-	default:
 	}
 }
