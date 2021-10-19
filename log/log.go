@@ -144,7 +144,7 @@ func Infof(format string, v ...interface{}) {
 	aclog.Named(fileInfo()).Infof(format, v...)
 }
 
-func signalHandle() {
+func SignalHandle() {
 	t1 := time.NewTimer(1 * time.Hour)
 	ch := make(chan os.Signal)
 	signal.Notify(ch, syscall.SIGUSR1, syscall.SIGUSR2)
