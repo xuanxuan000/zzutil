@@ -146,7 +146,7 @@ func Infof(format string, v ...interface{}) {
 
 func SignalHandle() {
 	t1 := time.NewTimer(1 * time.Hour)
-	ch := make(chan os.Signal)
+	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGUSR1, syscall.SIGUSR2)
 	for {
 		select {
