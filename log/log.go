@@ -21,7 +21,7 @@ var atom zap.AtomicLevel
 //LoggerInit 这个初始化，在程序在云下主机上运行时使用
 func LoggerInit() (*zap.SugaredLogger, zap.AtomicLevel) {
 
-	fileName := "/var/log/" + filepath.Base(os.Args[0]) + ".log"
+	fileName := "~/var/log/" + filepath.Base(os.Args[0]) + ".log"
 	atom = zap.NewAtomicLevel()
 	w := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   fileName,
