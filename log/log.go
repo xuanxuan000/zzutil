@@ -46,11 +46,8 @@ func LoggerInit() (*zap.SugaredLogger, zap.AtomicLevel) {
 	// aclog = zap.New(core, zap.AddCaller()).Sugar()
 
 	atom.SetLevel(zap.DebugLevel)
-
 	go SignalHandle()
-
 	return aclog, atom
-
 }
 
 //LoggerToStdoutInit 这个初始化，在程序在本地运行时使用
@@ -71,6 +68,7 @@ func LoggerToStdoutInit() (*zap.SugaredLogger, zap.AtomicLevel) {
 	// aclog = zap.New(core, zap.AddCaller()).Sugar()
 
 	atom.SetLevel(zap.DebugLevel)
+	go SignalHandle()
 	return aclog, atom
 }
 
@@ -148,6 +146,7 @@ func Infof(format string, v ...interface{}) {
 }
 
 func SignalHandle() {
+	Info("Start SignalHandle")
 	t1 := time.NewTimer(1 * time.Hour)
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGUSR1, syscall.SIGUSR2)
