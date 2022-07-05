@@ -46,6 +46,9 @@ func LoggerInit() (*zap.SugaredLogger, zap.AtomicLevel) {
 	// aclog = zap.New(core, zap.AddCaller()).Sugar()
 
 	atom.SetLevel(zap.DebugLevel)
+
+	go SignalHandle()
+
 	return aclog, atom
 
 }
